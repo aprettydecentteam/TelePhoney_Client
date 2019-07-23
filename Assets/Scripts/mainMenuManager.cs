@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class mainMenuManager : MonoBehaviour
 {
-    public void enterLobby() => SceneManager.LoadScene("Lobby", LoadSceneMode.Additive);
+    public void enterLobby() => sceneManager.changeScene("Lobby");
 
-    public void quitGame() => Application.Quit();
+    public void quitGame() => sceneManager.quitGame();
 }
