@@ -31,10 +31,15 @@ public class NetworkMessaging : MonoBehaviour
             //if there's a message
             //SendSocketMessage(string);
         }
+        else
+        {
+            ConnectWebSocketToServerAsync();
+        }
     }
 
-    private async void ConnectWebSocketToServerAsync()
+    private async void ConnectWebSocketToServerAsync( )
     {
+        //Replace this with hosted server endpoint
         Uri server_uri = new Uri("ws://localhost:8095/test");
         if( web_socket.State != WebSocketState.Open )
             await web_socket.ConnectAsync( server_uri , CancellationToken.None );
@@ -47,9 +52,17 @@ public class NetworkMessaging : MonoBehaviour
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-        Debug.Log(Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count));
+        String message = result.ToString();
+
+        if (message.Length > 0)
+            ProcessMessage(message);
 
         return;
+    }
+
+    private void ProcessMessage(String message)
+    {
+        //Interpret server messages
     }
 
     private async void SendSocketMessage(string m)
@@ -68,9 +81,7 @@ public class NetworkMessaging : MonoBehaviour
         action.setNoun("CONNECTION");
         action.setStep("1");
 
-        string jsonString = JsonConvert.SerializeObject(action);
-
-        SendJSONString(jsonString);
+        SendJsonViaPOST(action);
 
         return;
     }
@@ -87,22 +98,35 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public void SendJSONString( string jsonString )
+    public System.Object SendJsonViaPOST( System.Object data )
     {
-        HttpWebRequest jsonReq = (HttpWebRequest)WebRequest.Create("http://localhost:8095/");
-        jsonReq.ContentType = "application/json";
-        jsonReq.Method = "POST";
+        //Replace with hosted server IP
+        HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://localhost:8095/");
+        String return_resp = "";
+        req.ContentType = "application/json";
+        req.Method = "POST";
 
-        using (StreamWriter streamWriter = new StreamWriter(jsonReq.GetRequestStream()))
+        try
         {
-            streamWriter.Write(jsonString);
+            string data_string = JsonConvert.SerializeObject(data);
+
+            using (StreamWriter streamWriter = new StreamWriter(req.GetRequestStream()))
+            {
+                streamWriter.Write(data_string);
+            }
+
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            var reader = new System.IO.StreamReader(resp.GetResponseStream());
+            return_resp = reader.ReadToEnd();
+        }
+        catch
+        {
+            //do nothing
         }
 
-        HttpWebResponse jsonResp = (HttpWebResponse)jsonReq.GetResponse();
-        var reader = new System.IO.StreamReader(jsonResp.GetResponseStream());
-        //Debug.Log(reader.ReadToEnd());
+        System.Object temp = JsonConvert.DeserializeObject(return_resp);
 
-        return;
+        return temp;
     }
 
     private void CloseWebSocket()
