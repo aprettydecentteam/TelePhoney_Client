@@ -17,29 +17,6 @@ public class NetworkMessaging : MonoBehaviour
 
     private static ClientWebSocket web_socket = new ClientWebSocket();
 
-    // Start is called before the first frame update
-    /*
-    void Start()
-    {
-    }
-    */
-    // Update is called once per frame
-    /*
-    void Update()
-    {
-        if (web_socket.State == WebSocketState.Open)
-        {
-            CheckSocketMessage();
-
-            //if there's a message
-            //SendSocketMessage(string);
-        }
-        else
-        {
-            ConnectWebSocketToServerAsync();
-        }
-    }
-    */
     public static async void ConnectWebSocketToServerAsync( string uri = "ws://localhost:8095/test" )
     {
         //Replace this with hosted server endpoint
@@ -122,9 +99,10 @@ public class NetworkMessaging : MonoBehaviour
             var reader = new System.IO.StreamReader(resp.GetResponseStream());
             return_resp = reader.ReadToEnd();
         }
-        catch
+        catch (SystemException e)
         {
-            //do nothing
+            Debug.Log("Caught error of some kind: " + e);
+            return e;
         }
 
         System.Object temp = JsonConvert.DeserializeObject(return_resp);
