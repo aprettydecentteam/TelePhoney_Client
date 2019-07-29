@@ -101,7 +101,6 @@ public class NetworkMessaging : MonoBehaviour
         }
         catch (SystemException e)
         {
-            Debug.Log("Caught error of some kind: " + e);
             return e;
         }
 
