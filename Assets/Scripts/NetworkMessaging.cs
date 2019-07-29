@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System;
 using UnityEngine;
 using System.Net.WebSockets;
@@ -14,14 +15,16 @@ public class NetworkMessaging : MonoBehaviour
     private bool socketReady = false;
     private bool connected = false;
 
-    ClientWebSocket web_socket = new ClientWebSocket();
+    private static ClientWebSocket web_socket = new ClientWebSocket();
 
     // Start is called before the first frame update
+    /*
     void Start()
     {
     }
-
+    */
     // Update is called once per frame
+    /*
     void Update()
     {
         if (web_socket.State == WebSocketState.Open)
@@ -36,36 +39,36 @@ public class NetworkMessaging : MonoBehaviour
             ConnectWebSocketToServerAsync();
         }
     }
-
-    private async void ConnectWebSocketToServerAsync( )
+    */
+    public static async void ConnectWebSocketToServerAsync( string uri = "ws://localhost:8095/test" )
     {
         //Replace this with hosted server endpoint
-        Uri server_uri = new Uri("ws://localhost:8095/test");
-        if( web_socket.State != WebSocketState.Open )
+        Uri server_uri = new Uri(uri);
+        if( !socketOpen() )
             await web_socket.ConnectAsync( server_uri , CancellationToken.None );
 
         return;
     }
 
-    private async void CheckSocketMessage()
+    public static async Task<string> CheckSocketMessage()
     {
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-        String message = result.ToString();
+        string message = result.ToString();
 
         if (message.Length > 0)
             ProcessMessage(message);
 
-        return;
+        return message;
     }
 
-    private void ProcessMessage(String message)
+    private static void ProcessMessage(string message)
     {
         //Interpret server messages
     }
 
-    private async void SendSocketMessage(string m)
+    public static async void SendSocketMessage(string m)
     {
         ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(m));
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
@@ -86,9 +89,9 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public void SendPOSTRequest()
+    public void SendPOSTRequest( string url = "http://localhost:8095" )
     {
-        WebRequest req = WebRequest.Create("http://localhost:8095");
+        WebRequest req = WebRequest.Create(url);
         req.Method = "POST";
         //req.ContentType = "application/json";
 
@@ -98,10 +101,10 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public System.Object SendJsonViaPOST( System.Object data )
+    public static System.Object SendJsonViaPOST( System.Object data, string url = "http://localhost:8095/" )
     {
         //Replace with hosted server IP
-        HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://localhost:8095/");
+        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
         String return_resp = "";
         req.ContentType = "application/json";
         req.Method = "POST";
@@ -129,6 +132,10 @@ public class NetworkMessaging : MonoBehaviour
         return temp;
     }
 
+    public static bool socketOpen() {
+        return (NetworkMessaging.web_socket.State == WebSocketState.Open);
+    }
+
     private void CloseWebSocket()
     {
         web_socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
@@ -139,6 +146,7 @@ public class NetworkMessaging : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        Debug.Log("Application quit");
         CloseWebSocket();
 
         return;
@@ -146,6 +154,7 @@ public class NetworkMessaging : MonoBehaviour
 
     private void OnDisable()
     {
+        Debug.Log("Application Disable");
         CloseWebSocket();
 
         return;
