@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +12,21 @@ public class lobbyManager : MonoBehaviour
         NetworkMessaging.ConnectWebSocketToServerAsync();
         Debug.Log("Opening socket connection");
         var playerRequest = new newPlayerRequest();
+        string response = "";
 
         playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
         playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
 
-        string temp = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
-        Debug.Log("Response was: " + temp);
+        try 
+        {
+            response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
+        }
+        catch (SystemException e) 
+        {
+            Debug.Log("error was: " + e);
+        }
+
+        playerState.playerId = response;
     }
 
     // Update is called once per frame
