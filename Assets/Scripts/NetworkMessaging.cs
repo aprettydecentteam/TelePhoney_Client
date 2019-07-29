@@ -12,9 +12,6 @@ using Newtonsoft.Json;
 
 public class NetworkMessaging : MonoBehaviour
 {
-    private bool socketReady = false;
-    private bool connected = false;
-
     private static ClientWebSocket web_socket = new ClientWebSocket();
 
     public static async void ConnectWebSocketToServerAsync( string uri = "ws://localhost:8095/test" )
@@ -32,7 +29,7 @@ public class NetworkMessaging : MonoBehaviour
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-        string message = result.ToString();
+        string message = Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count);
 
         if (message.Length > 0)
             ProcessMessage(message);
@@ -53,7 +50,7 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public void ServerTest()
+    public static void ServerTest()
     {
         JsonSerializer serializer = new JsonSerializer();
         ActionMessage action = new ActionMessage();
@@ -116,7 +113,6 @@ public class NetworkMessaging : MonoBehaviour
     private void CloseWebSocket()
     {
         web_socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
-        connected = false;
 
         return;
     }

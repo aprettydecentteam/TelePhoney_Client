@@ -35,6 +35,11 @@ public class lobbyManager : MonoBehaviour
         NetworkMessaging.SendSocketMessage("This is a test message");
     }
 
+    public void testJsonPOST()
+    {
+        NetworkMessaging.ServerTest();
+    }
+
     private async void checkForMessage() 
     {
         string message = await NetworkMessaging.CheckSocketMessage();
