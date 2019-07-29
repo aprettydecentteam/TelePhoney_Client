@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class lobbyManager : MonoBehaviour
 {
+    private bool checkingForMessages = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,8 +15,9 @@ public class lobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (NetworkMessaging.socketOpen())
+        if (NetworkMessaging.socketOpen() && checkingForMessages == false)
         {
+            checkingForMessages = true;
             Debug.Log("Socket is open. Checking for messages...");
             checkForMessage();
         }
@@ -34,5 +36,6 @@ public class lobbyManager : MonoBehaviour
         {
             Debug.Log("Message was: " + message);
         }
+        checkingForMessages = false;
     }
 }

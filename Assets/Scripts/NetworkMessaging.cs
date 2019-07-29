@@ -146,6 +146,7 @@ public class NetworkMessaging : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        Debug.Log("Application quit");
         CloseWebSocket();
 
         return;
@@ -153,6 +154,7 @@ public class NetworkMessaging : MonoBehaviour
 
     private void OnDisable()
     {
+        Debug.Log("Application Disable");
         CloseWebSocket();
 
         return;
