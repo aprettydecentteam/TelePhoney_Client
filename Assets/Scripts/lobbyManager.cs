@@ -15,7 +15,8 @@ public class lobbyManager : MonoBehaviour
         playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
         playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
 
-        NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer");
+        string temp = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
+        Debug.Log("Response was: " + temp);
     }
 
     // Update is called once per frame
