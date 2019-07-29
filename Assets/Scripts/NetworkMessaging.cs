@@ -101,7 +101,7 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public System.Object SendJsonViaPOST( System.Object data, string url = "http://localhost:8095/" )
+    public static System.Object SendJsonViaPOST( System.Object data, string url = "http://localhost:8095/" )
     {
         //Replace with hosted server IP
         HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);

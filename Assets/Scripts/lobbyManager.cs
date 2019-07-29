@@ -10,6 +10,12 @@ public class lobbyManager : MonoBehaviour
     {
         NetworkMessaging.ConnectWebSocketToServerAsync();
         Debug.Log("Opening socket connection");
+        var playerRequest = new newPlayerRequest();
+
+        playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
+        playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
+
+        NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer");
     }
 
     // Update is called once per frame
@@ -37,5 +43,27 @@ public class lobbyManager : MonoBehaviour
             Debug.Log("Message was: " + message);
         }
         checkingForMessages = false;
+    }
+}
+
+    public class newPlayerRequest
+{
+    public string playerName;
+    public string deviceID;
+
+    public newPlayerRequest()
+    {
+        playerName = "";
+        deviceID = "";
+    }
+
+    public void setPlayerName(string playerName)
+    {
+        this.playerName = playerName;
+    }
+
+    public void setDeviceID(string deviceID)
+    {
+        this.deviceID = deviceID;
     }
 }
