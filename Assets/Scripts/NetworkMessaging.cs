@@ -137,8 +137,8 @@ public class NetworkMessaging : MonoBehaviour
 public class ActionMessage
 {
     public string step;
-    public string noun;
     public string verb;
+    public string noun;
 
     public ActionMessage()
     {
