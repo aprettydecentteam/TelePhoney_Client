@@ -90,6 +90,10 @@ public class ReceiverManager : MonoBehaviour
                 Component[] correctGuessComponents;
                 OutputMessage correctGuessUpdate = new OutputMessage();
                 correctGuessUpdate.correctGuesses = message.correctGuesses;
+                correctGuessComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in correctGuessComponents)
+                    manager.updateCorrectGuessWindow(correctGuessUpdate);
                 break;
             case "gameOver":
                 break;
