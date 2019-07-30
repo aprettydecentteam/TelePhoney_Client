@@ -145,6 +145,7 @@ public class GuessMessage
     public string [] nouns { get; set; }
     public string playerId { get; set; }
     public string sessionId { get; set; }
+    public string role { get; set; }
 
     public GuessMessage ()
     {
