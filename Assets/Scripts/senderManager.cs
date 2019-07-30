@@ -21,6 +21,7 @@ public class senderManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerState.playerRole = "Sender";
         step_dropdown = GameObject.Find("step_dropdown").GetComponent<Dropdown>();
         verb_dropdown = GameObject.Find("verb_dropdown").GetComponent<Dropdown>();
         noun_dropdown = GameObject.Find("noun_dropdown").GetComponent<Dropdown>();

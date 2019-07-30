@@ -17,6 +17,7 @@ public class ReceiverManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerState.playerRole = "Receiver";
         for(int i = 0; i < 4; i++)
         {
             verb_Guess[i] = GameObject.Find("VerbDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
