@@ -9,6 +9,8 @@ public class senderManager : MonoBehaviour
     List<ActionMessage> message_list = new List<ActionMessage>();
     ActionMessage next_message = new ActionMessage();
 
+    GuessMessage answer = new GuessMessage();
+    GuessMessage cypher = new GuessMessage();
     Dropdown step_dropdown;
     Dropdown noun_dropdown;
     Dropdown verb_dropdown;
@@ -22,6 +24,12 @@ public class senderManager : MonoBehaviour
         step_dropdown = GameObject.Find("step_dropdown").GetComponent<Dropdown>();
         verb_dropdown = GameObject.Find("verb_dropdown").GetComponent<Dropdown>();
         noun_dropdown = GameObject.Find("noun_dropdown").GetComponent<Dropdown>();
+
+        answer.verbs = new string[] {"Push", "Turn", "Turn", "Cut"};
+        answer.nouns = new string[] {"Wire", "Dial", "Switch", "Switch"};
+
+        cypher.verbs = new string[] {"Push", "", "Turn", ""};
+        cypher.nouns = new string[] {"", "Dial", "", "Switch"};
 
         Debug.Log("Connecting to web socket");
         if (!NetworkMessaging.socketOpen())
@@ -38,8 +46,8 @@ public class senderManager : MonoBehaviour
             Debug.Log("Socket is open");
             if (!receiverInitialized)
             {
-                // Need to generate answer and cypher
-                NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/initreceiverdemo");
+                receiverInitialized = true;
+                NetworkMessaging.SendJsonViaPOST(cypher, "http://localhost:8095/initreceiverdemo");
             }
 
             if (!checkingForMessages)
@@ -60,6 +68,34 @@ public class senderManager : MonoBehaviour
         }
 
         checkingForMessages = false;
+    }
+
+    private void evaluateGuess (clientEvent message)
+    {
+        int correctGuesses = 0;
+
+        foreach (var index in new int[] {0, 1, 2, 3})
+        {
+            if (message.nouns[index] == answer.nouns[index] &&
+                message.verbs[index] == answer.verbs[index])
+            {
+                correctGuesses++;
+            }
+
+            if (correctGuesses == 4)
+            {
+                clientEvent winner = new clientEvent();
+                winner.role = message.role;
+                NetworkMessaging.SendJsonViaPOST(winner, "http://localhost:8095/winnerdemo");
+            }
+
+            else
+            {
+                clientEvent numCorrect = new clientEvent();
+                numCorrect.correctGuesses = correctGuesses.ToString();
+                NetworkMessaging.SendJsonViaPOST(numCorrect, "http://localhost:8095/sendcorrectguessesdemo");
+            }
+        }
     }
 
     private void resolveMessage(clientEvent message)
@@ -83,13 +119,21 @@ public class senderManager : MonoBehaviour
 
                 foreach (OutputManager manager in guessComponents)
                     manager.updateGuessWindow(guessUpdate);
+
+                evaluateGuess(message);
                 break;
             case "correctGuesses":
                 Component[] correctGuessComponents;
                 OutputMessage correctGuessUpdate = new OutputMessage();
                 correctGuessUpdate.correctGuesses = message.correctGuesses;
+                correctGuessComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in correctGuessComponents)
+                    manager.updateCorrectGuessWindow(correctGuessUpdate);
                 break;
             case "gameOver":
+                playerState.gameResult = message.result;
+                sceneManager.changeScene("Result");
                 break;
             default:
                 Debug.Log("No matching event found for scene...");
