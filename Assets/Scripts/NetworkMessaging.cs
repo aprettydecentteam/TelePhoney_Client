@@ -32,9 +32,13 @@ public class NetworkMessaging : MonoBehaviour
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-        string message = result.ToString();
+        string message = Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count);
 
-        if (message.Length > 0)
+        if (message == null)
+        {
+            message = "";
+        }
+        else if (message.Length > 0)
             ProcessMessage(message);
 
         return message;
@@ -48,9 +52,12 @@ public class NetworkMessaging : MonoBehaviour
     public static async void SendSocketMessage(string m)
     {
         ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(m));
+        Debug.Log("Message to send: " + m);
+        if (web_socket == null)
+        {
+            Debug.Log("Socket is null");
+        }
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
-
-        return;
     }
 
     public void ServerTest()
