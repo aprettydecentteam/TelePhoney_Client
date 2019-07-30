@@ -78,9 +78,9 @@ public class OutputManager : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             verbOuts[i].gameObject.SetActive(true);
-            verbOuts[i].gameObject.GetComponent<Text>().text = message.verb;
+            verbOuts[i].gameObject.GetComponent<Text>().text = message.verbs[i];
             nounOuts[i].gameObject.SetActive(true);
-            nounOuts[i].gameObject.GetComponent<Text>().text = message.noun;
+            nounOuts[i].gameObject.GetComponent<Text>().text = message.nouns[i];
         }
     }
 
