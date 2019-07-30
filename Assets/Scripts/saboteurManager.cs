@@ -24,6 +24,7 @@ public class saboteurManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerState.playerRole = "Saboteur";
         step_dropdown = GameObject.Find("step_dropdown").GetComponent<Dropdown>();
         verb_dropdown = GameObject.Find("verb_dropdown").GetComponent<Dropdown>();
         noun_dropdown = GameObject.Find("noun_dropdown").GetComponent<Dropdown>();
@@ -35,8 +36,12 @@ public class saboteurManager : MonoBehaviour
 
         }
 
-        Debug.Log("Connecting to web socket");
-        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connectdemo");
+        if (!NetworkMessaging.socketOpen())
+        {
+            Debug.Log("Connecting to web socket");
+            NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connectdemo");
+        }
+
     }
 
     // Update is called once per frame
