@@ -6,6 +6,7 @@ using UnityEngine;
 public class lobbyManager : MonoBehaviour
 {
     private bool checkingForMessages = false;
+    private bool joinedSession = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,27 +28,24 @@ public class lobbyManager : MonoBehaviour
         playerState.playerId = response;
 */
         NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/joinSession");
-        while(!NetworkMessaging.socketOpen())
-        {
-            // do nothing :(
-        }
-        NetworkMessaging.SendSocketMessage("3");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (NetworkMessaging.socketOpen() && checkingForMessages == false)
+        if (NetworkMessaging.socketOpen())
         {
-            checkingForMessages = true;
-            Debug.Log("Socket is open. Checking for messages...");
-            checkForMessage();
+            if (!joinedSession)
+            {
+                NetworkMessaging.SendSocketMessage(playerState.playerId);
+            }
+            else if (!checkingForMessages)
+            {
+                checkingForMessages = true;
+                Debug.Log("Socket is open. Checking for messages...");
+                checkForMessage();
+            }
         }
-    }
-
-    public void testSocketMessage() 
-    {
-        NetworkMessaging.SendSocketMessage("This is a test message");
     }
 
     private async void checkForMessage() 
