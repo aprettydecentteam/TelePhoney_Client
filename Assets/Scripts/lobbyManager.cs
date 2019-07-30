@@ -15,7 +15,7 @@ public class lobbyManager : MonoBehaviour
 
         playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
         playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
-/*
+
         try 
         {
             response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
@@ -26,8 +26,7 @@ public class lobbyManager : MonoBehaviour
         }
 
         playerState.playerId = response;
-*/
-        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/joinSession");
+        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connect");
     }
 
     // Update is called once per frame
@@ -37,7 +36,10 @@ public class lobbyManager : MonoBehaviour
         {
             if (!joinedSession)
             {
-                NetworkMessaging.SendSocketMessage(playerState.playerId);
+                var joinSessionReq = new joinSessionRequest();
+                joinSessionReq.playerId = playerState.playerId;
+                NetworkMessaging.SendSocketMessage(joinSessionReq);
+                joinedSession = true;
             }
             else if (!checkingForMessages)
             {
@@ -60,7 +62,7 @@ public class lobbyManager : MonoBehaviour
     }
 }
 
-    public class newPlayerRequest
+public class newPlayerRequest
 {
     public string playerName;
     public string deviceID;
@@ -80,4 +82,10 @@ public class lobbyManager : MonoBehaviour
     {
         this.deviceID = deviceID;
     }
+}
+
+public class joinSessionRequest
+{
+    public string reqEvent { get; set; } = "joinSession";
+    public string playerId { get; set; }
 }
