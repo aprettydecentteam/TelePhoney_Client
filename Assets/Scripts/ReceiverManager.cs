@@ -32,8 +32,8 @@ public class ReceiverManager : MonoBehaviour
     {
         for(int i = 0; i < 4; i++)
         {
-            next_message.setVerb(verb_Guess[i].captionText.text.ToString(),i);
-            next_message.setNoun(noun_Guess[i].captionText.text.ToString(),i);
+            next_message.verbs[i] = verb_Guess[i].captionText.text.ToString();
+            next_message.nouns[i] = noun_Guess[i].captionText.text.ToString();
         }
         next_message.playerId = playerState.playerId;
         next_message.sessionId = playerState.sessionId;

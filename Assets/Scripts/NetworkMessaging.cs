@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 
 public class NetworkMessaging : MonoBehaviour
 {
-<<<<<<< Updated upstream
     private static bool checkingForMessages = false;
     void update()
     {
@@ -22,10 +21,6 @@ public class NetworkMessaging : MonoBehaviour
             CheckSocketMessage();
         }
     }
-=======
-    private bool socketReady = false;
-    private bool connected = false;
->>>>>>> Stashed changes
 
     private static ClientWebSocket web_socket = new ClientWebSocket();
 
@@ -44,43 +39,18 @@ public class NetworkMessaging : MonoBehaviour
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-<<<<<<< Updated upstream
         System.Object newMessage = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count));
-=======
-        string message = result.ToString();
-
-        if (message.Length > 0)
-            ProcessMessage(message);
->>>>>>> Stashed changes
 
         playerState.messageQueue.Enqueue(newMessage);
         checkingForMessages = false;
     }
 
-    public static async void SendSocketMessage(string m)
+    public static async void SendSocketMessage( System.Object data)
     {
-        ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(m));
+        ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
-
-        return;
     }
 
-<<<<<<< Updated upstream
-=======
-    public void ServerTest()
-    {
-        JsonSerializer serializer = new JsonSerializer();
-        ActionMessage action = new ActionMessage();
-        action.setVerb("TEST");
-        action.setNoun("CONNECTION");
-        action.setStep("1");
-
-        SendJsonViaPOST(action);
-
-        return;
-    }
-
->>>>>>> Stashed changes
     public void SendPOSTRequest( string url = "http://localhost:8095" )
     {
         WebRequest req = WebRequest.Create(url);
@@ -131,7 +101,6 @@ public class NetworkMessaging : MonoBehaviour
     private void CloseWebSocket()
     {
         web_socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
-        connected = false;
 
         return;
     }
@@ -155,44 +124,36 @@ public class NetworkMessaging : MonoBehaviour
 
 public class ActionMessage
 {
-    public string step;
-    public string noun;
-    public string verb;
+    public string step { get; set; }
+    public string verb { get; set; }
+    public string noun { get; set; }
+    public string playerId { get; set; }
+    public string sessionId { get; set; }
 
     public ActionMessage()
     {
         step = "";
         noun = "";
         verb = "";
+        playerId = "";
+        sessionId = "";
     }
+}
+public class GuessMessage 
+{
+    public string [] verbs { get; set; }
+    public string [] nouns { get; set; }
+    public string playerId { get; set; }
+    public string sessionId { get; set; }
 
-    public void setStep(string step)
+    public GuessMessage ()
     {
-        this.step = step;
-    }
-
-    public string getAction()
-    {
-        return this.step;
-    }
-
-    public void setNoun(string noun)
-    {
-        this.noun = noun;
-    }
-
-    public string getNoun()
-    {
-        return this.noun;
-    }
-
-    public void setVerb(string verb)
-    {
-        this.verb = verb;
-    }
-
-    public string getVerb()
-    {
-        return this.verb;
+        for(int i = 0; i < 4; i++)
+        {
+            verbs[i] = "";
+            nouns[i] = "";
+        }
+        playerId = "";
+        sessionId = "";
     }
 }
