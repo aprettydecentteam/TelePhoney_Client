@@ -44,20 +44,18 @@ public class lobbyManager : MonoBehaviour
             else if (!checkingForMessages)
             {
                 checkingForMessages = true;
-                Debug.Log("Socket is open. Checking for messages...");
                 checkForMessage();
             }
         }
     }
 
-    private async void checkForMessage() 
+    private void checkForMessage() 
     {
-        string message = await NetworkMessaging.CheckSocketMessage();
-
-        if ( message != null && message != "" )
+        if(playerState.messageQueue.Count > 0)
         {
-            Debug.Log("Message was: " + message);
+            
         }
+
         checkingForMessages = false;
     }
 
