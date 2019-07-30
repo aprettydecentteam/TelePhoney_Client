@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5852023504857588141}
   - component: {fileID: 3789379259972100594}
   m_Layer: 5
-  m_Name: Noun (1)
+  m_Name: Noun1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 2392476880928654999}
   - component: {fileID: 1663949223767493264}
   m_Layer: 5
-  m_Name: Verb (2)
+  m_Name: Verb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 5121662977639564350}
   - component: {fileID: 4570268036369301891}
   m_Layer: 5
-  m_Name: Noun (3)
+  m_Name: Noun3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 6716785354579626915}
   - component: {fileID: 2409896932845457974}
   m_Layer: 5
-  m_Name: Verb (0)
+  m_Name: Verb0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 6121166637752289421}
   - component: {fileID: 8564274777803803717}
   m_Layer: 5
-  m_Name: Noun (2)
+  m_Name: Noun2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 5479436485998448590}
   - component: {fileID: 4305836400583937173}
   m_Layer: 5
-  m_Name: Noun (0)
+  m_Name: Noun0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -893,7 +893,7 @@ GameObject:
   - component: {fileID: 1307263173381825383}
   - component: {fileID: 5523512150109684767}
   m_Layer: 5
-  m_Name: Verb (1)
+  m_Name: Verb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1062,6 +1062,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a7afb8472cd1744a0aa3cbaab3aa03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OutputType: 
+  verbOuts:
+  - {fileID: 5427352988088139537}
+  - {fileID: 4471218667566452581}
+  - {fileID: 878438814435532183}
+  - {fileID: 9065499736428637337}
+  nounOuts:
+  - {fileID: 5279032030040513474}
+  - {fileID: 6248252113555282518}
+  - {fileID: 4543278343147819190}
+  - {fileID: 3172575421672429096}
+  matchesOut: {fileID: 0}
 --- !u!1 &8734169540251603876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +1086,7 @@ GameObject:
   - component: {fileID: 7260243011390359874}
   - component: {fileID: 7591586737921843068}
   m_Layer: 5
-  m_Name: Verb (3)
+  m_Name: Verb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

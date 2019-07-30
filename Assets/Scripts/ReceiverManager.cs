@@ -9,8 +9,8 @@ public class ReceiverManager : MonoBehaviour
     List<GuessMessage> message_list = new List<GuessMessage>();
     GuessMessage next_message = new GuessMessage();
 
-    Dropdown [] verb_Guess;
-    Dropdown [] noun_Guess;
+    public Dropdown [] verb_Guess;
+    public Dropdown [] noun_Guess;
 
     private bool checkingForMessages = false;
 
@@ -18,12 +18,6 @@ public class ReceiverManager : MonoBehaviour
     void Start()
     {
         playerState.playerRole = "Receiver";
-        for(int i = 0; i < 4; i++)
-        {
-            verb_Guess[i] = GameObject.Find("VerbDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
-            noun_Guess[i] = GameObject.Find("NounDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
-        }
-
         Debug.Log("Connecting to web socket");
         if (!NetworkMessaging.socketOpen())
         {
