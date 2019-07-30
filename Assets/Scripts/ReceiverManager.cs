@@ -60,7 +60,7 @@ public class ReceiverManager : MonoBehaviour
                 roleRequest roleSend = new roleRequest();
                 roleSend.role = "Receiver";
                 roleSend.id = message.id;
-                NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/roledemo");
+                NetworkMessaging.SendJsonViaPOST(roleSend, "http://35.209.52.72:80/roledemo");
                 break;
             case "sentMessage":
                 Component[] messageComponents;
@@ -128,7 +128,7 @@ public class ReceiverManager : MonoBehaviour
         
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendguessdemo");
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://35.209.52.72:80/sendguessdemo");
         }
         catch (SystemException e)
         {

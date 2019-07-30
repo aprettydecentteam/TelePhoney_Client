@@ -48,7 +48,7 @@ public class senderManager : MonoBehaviour
             if (!receiverInitialized)
             {
                 receiverInitialized = true;
-                NetworkMessaging.SendJsonViaPOST(cypher, "http://localhost:8095/initreceiverdemo");
+                NetworkMessaging.SendJsonViaPOST(cypher, "http://35.209.52.72:80/initreceiverdemo");
             }
 
             if (!checkingForMessages)
@@ -87,14 +87,14 @@ public class senderManager : MonoBehaviour
             {
                 clientEvent winner = new clientEvent();
                 winner.role = message.role;
-                NetworkMessaging.SendJsonViaPOST(winner, "http://localhost:8095/winnerdemo");
+                NetworkMessaging.SendJsonViaPOST(winner, "http://35.209.52.72:80/winnerdemo");
             }
 
             else
             {
                 clientEvent numCorrect = new clientEvent();
                 numCorrect.correctGuesses = correctGuesses.ToString();
-                NetworkMessaging.SendJsonViaPOST(numCorrect, "http://localhost:8095/sendcorrectguessesdemo");
+                NetworkMessaging.SendJsonViaPOST(numCorrect, "http://35.209.52.72:80/sendcorrectguessesdemo");
             }
         }
     }
@@ -108,7 +108,7 @@ public class senderManager : MonoBehaviour
                 roleRequest roleSend = new roleRequest();
                 roleSend.role = "Sender";
                 roleSend.id = message.id;
-                NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/roledemo");
+                NetworkMessaging.SendJsonViaPOST(roleSend, "http://35.209.52.72:80/roledemo");
                 break;
             case "updateGuess":
                 Component[] guessComponents;
@@ -154,7 +154,7 @@ public class senderManager : MonoBehaviour
 
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://35.209.52.72:80/sendmessagedemo");
         }
         catch (SystemException e)
         {

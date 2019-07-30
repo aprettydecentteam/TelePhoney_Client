@@ -19,7 +19,7 @@ public class lobbyManager : MonoBehaviour
         try 
         {
             Debug.Log("Sending new player");
-            response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
+            response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://35.209.52.72:80/newPlayer").ToString();
         }
         catch (SystemException e) 
         {
