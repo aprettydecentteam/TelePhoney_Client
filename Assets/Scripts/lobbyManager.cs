@@ -9,14 +9,12 @@ public class lobbyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        NetworkMessaging.ConnectWebSocketToServerAsync();
-        Debug.Log("Opening socket connection");
         var playerRequest = new newPlayerRequest();
         string response = "";
 
         playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
         playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
-
+/*
         try 
         {
             response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
@@ -27,6 +25,13 @@ public class lobbyManager : MonoBehaviour
         }
 
         playerState.playerId = response;
+*/
+        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/joinSession");
+        while(!NetworkMessaging.socketOpen())
+        {
+            // do nothing :(
+        }
+        NetworkMessaging.SendSocketMessage("3");
     }
 
     // Update is called once per frame
