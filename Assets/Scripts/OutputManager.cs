@@ -21,6 +21,10 @@ public class OutputManager : MonoBehaviour
             //before searching in other objects
             verbOuts[i] = this.gameObject.transform.Find("Verb (" + i + ")");
             nounOuts[i] = this.gameObject.transform.Find("Noun (" + i + ")");
+
+            //Set these to false so they don't actually populate until the first message is received
+            verbOuts[i].gameObject.SetActive(false);
+            nounOuts[i].gameObject.SetActive(false);
         }
         
     }
