@@ -6,6 +6,7 @@ using UnityEngine;
 public class lobbyManager : MonoBehaviour
 {
     private bool checkingForMessages = false;
+    private bool joinedSession = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +15,7 @@ public class lobbyManager : MonoBehaviour
 
         playerRequest.playerName = SystemInfo.deviceUniqueIdentifier;
         playerRequest.deviceID = SystemInfo.deviceUniqueIdentifier;
-/*
+
         try 
         {
             response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
@@ -25,29 +26,28 @@ public class lobbyManager : MonoBehaviour
         }
 
         playerState.playerId = response;
-*/
-        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/joinSession");
-        while(!NetworkMessaging.socketOpen())
-        {
-            // do nothing :(
-        }
-        NetworkMessaging.SendSocketMessage("3");
+        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connect");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (NetworkMessaging.socketOpen() && checkingForMessages == false)
+        if (NetworkMessaging.socketOpen())
         {
-            checkingForMessages = true;
-            Debug.Log("Socket is open. Checking for messages...");
-            checkForMessage();
+            if (!joinedSession)
+            {
+                var joinSessionReq = new joinSessionRequest();
+                joinSessionReq.playerId = playerState.playerId;
+                NetworkMessaging.SendSocketMessage(joinSessionReq);
+                joinedSession = true;
+            }
+            else if (!checkingForMessages)
+            {
+                checkingForMessages = true;
+                Debug.Log("Socket is open. Checking for messages...");
+                checkForMessage();
+            }
         }
-    }
-
-    public void testSocketMessage() 
-    {
-        NetworkMessaging.SendSocketMessage("This is a test message");
     }
 
     private async void checkForMessage() 
@@ -62,7 +62,7 @@ public class lobbyManager : MonoBehaviour
     }
 }
 
-    public class newPlayerRequest
+public class newPlayerRequest
 {
     public string playerName;
     public string deviceID;
@@ -82,4 +82,10 @@ public class lobbyManager : MonoBehaviour
     {
         this.deviceID = deviceID;
     }
+}
+
+public class joinSessionRequest
+{
+    public string reqEvent { get; set; } = "joinSession";
+    public string playerId { get; set; }
 }

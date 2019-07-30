@@ -38,8 +38,10 @@ public class NetworkMessaging : MonoBehaviour
         {
             message = "";
         }
-        else if (message.Length > 0)
-            ProcessMessage(message);
+        else
+        {
+            
+        }
 
         return message;
     }
@@ -49,14 +51,9 @@ public class NetworkMessaging : MonoBehaviour
         //Interpret server messages
     }
 
-    public static async void SendSocketMessage(string m)
+    public static async void SendSocketMessage( System.Object data)
     {
-        ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(m));
-        Debug.Log("Message to send: " + m);
-        if (web_socket == null)
-        {
-            Debug.Log("Socket is null");
-        }
+        ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
