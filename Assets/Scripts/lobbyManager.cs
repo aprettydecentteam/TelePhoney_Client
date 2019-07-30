@@ -53,39 +53,47 @@ public class lobbyManager : MonoBehaviour
     {
         if(playerState.messageQueue.Count > 0)
         {
-            
+            System.Object newMessage = playerState.messageQueue.Dequeue();
+            resolveMessage((lobbyMessage)newMessage);
         }
 
         checkingForMessages = false;
     }
 
+    private void resolveMessage(lobbyMessage message)
+    {
+        switch(message.msgEvent)
+        {
+            case "searchingForSession":
+                Debug.Log("Searching for Session...");
+                break;
+            case "joinedSession":
+                Debug.Log("Joined Session: " + message.sessionId);
+                playerState.sessionId = message.sessionId;
+                break;
+            default:
+                Debug.Log("No matching event found for Lobby...");
+                break;
+        }
+    }
+
     public void enterSender() => sceneManager.changeScene("Sender");
+}
+
+public class lobbyMessage
+{
+    public string sessionId { get; set; }
+    public string msgEvent {get; set; }
 }
 
 public class newPlayerRequest
 {
-    public string playerName;
-    public string deviceID;
-
-    public newPlayerRequest()
-    {
-        playerName = "";
-        deviceID = "";
-    }
-
-    public void setPlayerName(string playerName)
-    {
-        this.playerName = playerName;
-    }
-
-    public void setDeviceID(string deviceID)
-    {
-        this.deviceID = deviceID;
-    }
+    public string playerName { get; set; } = "";
+    public string deviceID { get; set; } = "";
 }
 
 public class joinSessionRequest
 {
     public string reqEvent { get; set; } = "joinSession";
-    public string playerId { get; set; }
+    public string playerId { get; set; } = "";
 }
