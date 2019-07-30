@@ -51,7 +51,7 @@ public class NetworkMessaging : MonoBehaviour
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public void SendPOSTRequest( string url = "http://localhost:8095" )
+    public void SendPOSTRequest( string url = "http://35.209.52.72:80" )
     {
         WebRequest req = WebRequest.Create(url);
         req.Method = "POST";
@@ -63,7 +63,7 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public static System.Object SendJsonViaPOST( System.Object data, string url = "http://localhost:8095/" )
+    public static System.Object SendJsonViaPOST( System.Object data, string url = "http://35.209.52.72:80/" )
     {
         //Replace with hosted server IP
         HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);

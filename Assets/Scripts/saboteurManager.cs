@@ -69,7 +69,7 @@ public class saboteurManager : MonoBehaviour
                 roleRequest roleSend = new roleRequest();
                 roleSend.role = "Saboteur";
                 roleSend.id = message.id;
-                NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/roledemo");
+                NetworkMessaging.SendJsonViaPOST(roleSend, "http://35.209.52.72:80/roledemo");
                 break;
             case "sentMessage":
                 Component[] messageComponents;
@@ -129,7 +129,7 @@ public class saboteurManager : MonoBehaviour
         
         try
         {
-            NetworkMessaging.SendJsonViaPOST(guess_message, "http://localhost:8095/sendguessdemo");
+            NetworkMessaging.SendJsonViaPOST(guess_message, "http://35.209.52.72:80/sendguessdemo");
         }
         catch (SystemException e)
         {
@@ -149,7 +149,7 @@ public class saboteurManager : MonoBehaviour
 
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://35.209.52.72:80/sendmessagedemo");
         }
         catch (SystemException e)
         {
@@ -169,7 +169,7 @@ public class saboteurManager : MonoBehaviour
 
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://35.209.52.72:80/sendmessagedemo");
         }
         catch (SystemException e)
         {
