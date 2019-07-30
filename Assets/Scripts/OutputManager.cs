@@ -32,52 +32,10 @@ public class OutputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (NetworkMessaging.socketOpen())
-        {
-            if (!checkingForMessages)
-            {
-                checkingForMessages = true;
-                checkForMessage();
-            }
-        }
+
     }
 
-    private void checkForMessage() 
-    {
-        if(playerState.messageQueue.Count > 0)
-        {
-            System.Object newMessage = playerState.messageQueue.Dequeue();
-            resolveMessage((OutputMessage)newMessage);
-        }
-
-        checkingForMessages = false;
-    }
-
-    private void resolveMessage(OutputMessage message)
-    {
-        switch(message.msgEvent)
-        {
-            case "UpdateGuess":
-                if(OutputType == "Guess")
-                {
-                    Debug.Log("Updating Guess");
-                    updateGuessWindow(message);
-                }
-                break;
-            case "SentMessage":
-                if(OutputType == "Send")
-                {
-                    Debug.Log("Updating Send");
-                    updateSendWindow(message);
-                }
-                break;
-            default:
-                Debug.Log("No matching event found for Output...");
-                break;
-        }
-    }
-
-    private void updateGuessWindow(OutputMessage message)
+    public void updateGuessWindow(OutputMessage message)
     {
         for(int i = 0; i < 4; i++)
         {
@@ -88,7 +46,7 @@ public class OutputManager : MonoBehaviour
         }
     }
 
-    private void updateSendWindow(OutputMessage message)
+    public void updateSendWindow(OutputMessage message)
     {
         int displayStep = Int32.Parse(message.step);
         for(int i = 0; i < 4; i++)
@@ -108,14 +66,15 @@ public class OutputManager : MonoBehaviour
 
         }
     }
-
-    public class OutputMessage
-    {
-        public string step;
-        public string verb;
-        public string noun;
-        public string [] verbs;
-        public string [] nouns;
-        public string msgEvent {get; set; }
-    }
+}
+public class OutputMessage
+{
+    public string step;
+    public string verb;
+    public string noun;
+    public string [] verbs;
+    public string [] nouns;
+    public string msgEvent {get; set; }
+    public string role { get; set; }
+    public string correctGuesses { get; set; }
 }
