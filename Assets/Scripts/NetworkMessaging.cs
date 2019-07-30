@@ -157,3 +157,23 @@ public class GuessMessage
         sessionId = "";
     }
 }
+
+public class roleRequest
+{
+    public string role { get; set; }
+    public int id { get; set; }
+}
+
+public class clientEvent
+{
+    public int id { get; set; } = 0;
+    public string msgEvent { get; set; } = "";
+    public string noun { get; set; } = "";
+    public string verb { get; set; } = "";
+    public string step { get; set; } = "";
+    public string [] verbs { get; set; }
+    public string [] nouns { get; set; }
+    public string role { get; set; } = "";
+    public string correctGuesses { get; set; } = "";
+    public string result { get; set; } = "";
+}
