@@ -65,10 +65,31 @@ public class ReceiverManager : MonoBehaviour
                 NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/roledemo");
                 break;
             case "sentMessage":
+                Component[] messageComponents;
+                OutputMessage clueUpdate = new OutputMessage();
+                clueUpdate.noun = message.noun;
+                clueUpdate.verb = message.verb;
+                clueUpdate.step = message.step;
+                messageComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in messageComponents)
+                    manager.updateSendWindow(clueUpdate);
                 break;
             case "updateGuess":
+                Component[] guessComponents;
+                OutputMessage guessUpdate = new OutputMessage();
+                guessUpdate.nouns = message.nouns;
+                guessUpdate.verbs = message.verbs;
+                guessUpdate.role = message.role;
+                guessComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in guessComponents)
+                    manager.updateGuessWindow(guessUpdate);
                 break;
             case "correctGuesses":
+                Component[] correctGuessComponents;
+                OutputMessage correctGuessUpdate = new OutputMessage();
+                correctGuessUpdate.correctGuesses = message.correctGuesses;
                 break;
             case "gameOver":
                 break;
