@@ -107,6 +107,8 @@ public class saboteurManager : MonoBehaviour
                 correctGuessUpdate.correctGuesses = message.correctGuesses;
                 break;
             case "gameOver":
+                playerState.gameResult = message.result;
+                sceneManager.changeScene("Result");
                 break;
             default:
                 Debug.Log("No matching event found for scene...");
@@ -128,7 +130,7 @@ public class saboteurManager : MonoBehaviour
         
         try
         {
-            NetworkMessaging.SendJsonViaPOST(guess_message, "http://localhost:8095/sendmessagedemo");
+            NetworkMessaging.SendJsonViaPOST(guess_message, "http://localhost:8095/sendguessdemo");
         }
         catch (SystemException e)
         {
@@ -150,7 +152,7 @@ public class saboteurManager : MonoBehaviour
 
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message);
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
         }
         catch (SystemException e)
         {
