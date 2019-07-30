@@ -24,7 +24,10 @@ public class ReceiverManager : MonoBehaviour
         }
 
         Debug.Log("Connecting to web socket");
-        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connectdemo");
+        if (!NetworkMessaging.socketOpen())
+        {
+            NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connectdemo");
+        }
     }
 
     // Update is called once per frame
@@ -112,12 +115,13 @@ public class ReceiverManager : MonoBehaviour
         }
         next_message.playerId = playerState.playerId;
         next_message.sessionId = playerState.sessionId;
+        next_message.role = "Receiver";
 
         message_list.Add(next_message);
         
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendguessdemo");
         }
         catch (SystemException e)
         {
