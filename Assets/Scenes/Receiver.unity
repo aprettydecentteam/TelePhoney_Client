@@ -301,7 +301,7 @@ PrefabInstance:
     - target: {fileID: 8530821798673108452, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
       propertyPath: m_Name
-      value: Guess
+      value: Previous
       objectReference: {fileID: 0}
     - target: {fileID: 2539878578643004974, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
@@ -411,7 +411,7 @@ PrefabInstance:
     - target: {fileID: 2582027344247455906, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
       propertyPath: m_Text
-      value: Last Guess
+      value: Previous Attempt
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f598812befccb3149a0454b2e5724ece, type: 3}
@@ -662,7 +662,7 @@ PrefabInstance:
     - target: {fileID: 8530821798673108452, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
       propertyPath: m_Name
-      value: SendMessage
+      value: Send
       objectReference: {fileID: 0}
     - target: {fileID: 2539878578643004974, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
@@ -772,7 +772,12 @@ PrefabInstance:
     - target: {fileID: 2582027344247455906, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
       propertyPath: m_Text
-      value: Clue From Sender
+      value: Clue from Sender
+      objectReference: {fileID: 0}
+    - target: {fileID: 1217761546594329600, guid: f598812befccb3149a0454b2e5724ece,
+        type: 3}
+      propertyPath: OutputType
+      value: Send
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f598812befccb3149a0454b2e5724ece, type: 3}
@@ -902,9 +907,14 @@ PrefabInstance:
     - target: {fileID: 2582027344247455906, guid: f598812befccb3149a0454b2e5724ece,
         type: 3}
       propertyPath: m_Text
-      value: 'Message to Complete
+      value: 'Encrypted Message
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 1217761546594329600, guid: f598812befccb3149a0454b2e5724ece,
+        type: 3}
+      propertyPath: OutputType
+      value: Cipher
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f598812befccb3149a0454b2e5724ece, type: 3}
@@ -948,8 +958,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 182.83002, y: 69.075}
-  m_SizeDelta: {x: -365.7, y: -288.15}
+  m_AnchoredPosition: {x: 182.83002, y: 76}
+  m_SizeDelta: {x: -365.7, y: -302}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070281797
 MonoBehaviour:
@@ -973,22 +983,24 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 24
+    m_FontSize: 23
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: As the Receiver, it's your job to fill in the blanks of the message using
-    clues from the sender and the partially completed cipher.  Watch out though, the
-    saboteur is also trying to decipher the message, and they may modify your sender's
-    clues to prevent you from deciphering the message.  Whichever player deciphers
-    the message first wins!
+  m_Text: "- As the Receiver, your objective is to Decipher the Steps of the Encrypted
+    Message.\n- The Sender is trying to help you accomplish this, by sending you clues.
+    \ \n- Be Careful! The Saboteur is also trying to Decipher the Steps in the Hidden
+    Message.\n- The Saboteur will see Clues from Sender before the Receiver, and can
+    choose to modify part of the clue rather than attempting to decipher the steps
+    in the Hidden Message.\n- If you can Decipher the Encrypted Message before the
+    Saboteur, you win!\n"
 --- !u!222 &2070281798
 CanvasRenderer:
   m_ObjectHideFlags: 0
