@@ -29,9 +29,11 @@ public class senderManager : MonoBehaviour
 
     public void send_message()
     {
-        next_message.setStep(step_dropdown.captionText.text.ToString());
-        next_message.setNoun(noun_dropdown.captionText.text.ToString());
-        next_message.setVerb(verb_dropdown.captionText.text.ToString());
+        next_message.step = (step_dropdown.captionText.text.ToString());
+        next_message.noun = (noun_dropdown.captionText.text.ToString());
+        next_message.verb = (verb_dropdown.captionText.text.ToString());
+        next_message.playerId = playerState.playerId;
+        next_message.sessionId = playerState.sessionId;
 
         message_list.Add(next_message);
 

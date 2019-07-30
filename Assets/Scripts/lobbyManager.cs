@@ -65,6 +65,8 @@ public class lobbyManager : MonoBehaviour
         }
         checkingForMessages = false;
     }
+
+    public void enterSender() => sceneManager.changeScene("Sender");
 }
 
     public class newPlayerRequest

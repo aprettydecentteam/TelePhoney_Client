@@ -61,9 +61,9 @@ public class NetworkMessaging : MonoBehaviour
     {
         JsonSerializer serializer = new JsonSerializer();
         ActionMessage action = new ActionMessage();
-        action.setVerb("TEST");
-        action.setNoun("CONNECTION");
-        action.setStep("1");
+        action.verb = ("TEST");
+        action.noun = ("CONNECTION");
+        action.step = ("1");
 
         SendJsonViaPOST(action);
 
@@ -143,44 +143,18 @@ public class NetworkMessaging : MonoBehaviour
 
 public class ActionMessage
 {
-    public string step;
-    public string verb;
-    public string noun;
+    public string step { get; set; }
+    public string verb { get; set; }
+    public string noun { get; set; }
+    public string playerId { get; set; }
+    public string sessionId { get; set; }
 
     public ActionMessage()
     {
         step = "";
         noun = "";
         verb = "";
-    }
-
-    public void setStep(string step)
-    {
-        this.step = step;
-    }
-
-    public string getAction()
-    {
-        return this.step;
-    }
-
-    public void setNoun(string noun)
-    {
-        this.noun = noun;
-    }
-
-    public string getNoun()
-    {
-        return this.noun;
-    }
-
-    public void setVerb(string verb)
-    {
-        this.verb = verb;
-    }
-
-    public string getVerb()
-    {
-        return this.verb;
+        playerId = "";
+        sessionId = "";
     }
 }
