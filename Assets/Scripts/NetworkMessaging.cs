@@ -12,9 +12,6 @@ using Newtonsoft.Json;
 
 public class NetworkMessaging : MonoBehaviour
 {
-    private bool socketReady = false;
-    private bool connected = false;
-
     private static ClientWebSocket web_socket = new ClientWebSocket();
 
     public static async void ConnectWebSocketToServerAsync( string uri = "ws://localhost:8095/test" )
@@ -57,13 +54,13 @@ public class NetworkMessaging : MonoBehaviour
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public void ServerTest()
+    public static void ServerTest()
     {
         JsonSerializer serializer = new JsonSerializer();
         ActionMessage action = new ActionMessage();
-        action.setVerb("TEST");
-        action.setNoun("CONNECTION");
-        action.setStep("1");
+        action.verb = ("TEST");
+        action.noun = ("CONNECTION");
+        action.step = ("1");
 
         SendJsonViaPOST(action);
 
@@ -120,7 +117,6 @@ public class NetworkMessaging : MonoBehaviour
     private void CloseWebSocket()
     {
         web_socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
-        connected = false;
 
         return;
     }
@@ -144,44 +140,18 @@ public class NetworkMessaging : MonoBehaviour
 
 public class ActionMessage
 {
-    public string step;
-    public string noun;
-    public string verb;
+    public string step { get; set; }
+    public string verb { get; set; }
+    public string noun { get; set; }
+    public string playerId { get; set; }
+    public string sessionId { get; set; }
 
     public ActionMessage()
     {
         step = "";
         noun = "";
         verb = "";
-    }
-
-    public void setStep(string step)
-    {
-        this.step = step;
-    }
-
-    public string getAction()
-    {
-        return this.step;
-    }
-
-    public void setNoun(string noun)
-    {
-        this.noun = noun;
-    }
-
-    public string getNoun()
-    {
-        return this.noun;
-    }
-
-    public void setVerb(string verb)
-    {
-        this.verb = verb;
-    }
-
-    public string getVerb()
-    {
-        return this.verb;
+        playerId = "";
+        sessionId = "";
     }
 }
