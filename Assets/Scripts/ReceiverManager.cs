@@ -89,6 +89,16 @@ public class ReceiverManager : MonoBehaviour
                 foreach (OutputManager manager in guessComponents)
                     manager.updateGuessWindow(guessUpdate);
                 break;
+            case "initCypher":
+                Component[] cypherComponents;
+                OutputMessage cypherUpdate = new OutputMessage();
+                cypherUpdate.nouns = message.nouns;
+                cypherUpdate.verbs = message.verbs;
+                cypherComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in cypherComponents)
+                    manager.updateCipherWindow(cypherUpdate);
+                break;
             case "correctGuesses":
                 Component[] correctGuessComponents;
                 OutputMessage correctGuessUpdate = new OutputMessage();
@@ -99,6 +109,8 @@ public class ReceiverManager : MonoBehaviour
                     manager.updateCorrectGuessWindow(correctGuessUpdate);
                 break;
             case "gameOver":
+                playerState.gameResult = message.result;
+                sceneManager.changeScene("Result");
                 break;
             default:
                 Debug.Log("No matching event found for scene...");
