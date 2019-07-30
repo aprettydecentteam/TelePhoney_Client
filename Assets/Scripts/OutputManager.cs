@@ -12,6 +12,7 @@ public class OutputManager : MonoBehaviour
 
     private Transform [] verbOuts;
     private Transform [] nounOuts;
+    private Transform matchesOut;
 
     void Start()
     {
@@ -26,7 +27,7 @@ public class OutputManager : MonoBehaviour
             verbOuts[i].gameObject.SetActive(false);
             nounOuts[i].gameObject.SetActive(false);
         }
-        
+        matchesOut = GameObject.Find("MatchTracker").transform;
     }
 
     // Update is called once per frame
@@ -37,33 +38,73 @@ public class OutputManager : MonoBehaviour
 
     public void updateGuessWindow(OutputMessage message)
     {
-        for(int i = 0; i < 4; i++)
+        if(OutputType == "Guess")
         {
-            verbOuts[i].gameObject.SetActive(true);
-            verbOuts[i].gameObject.GetComponent<Text>().text = message.verbs[i];
-            nounOuts[i].gameObject.SetActive(true);
-            nounOuts[i].gameObject.GetComponent<Text>().text = message.nouns[i];
+            for(int i = 0; i < 4; i++)
+            {
+                verbOuts[i].gameObject.SetActive(true);
+                verbOuts[i].gameObject.GetComponent<Text>().text = message.verbs[i];
+                nounOuts[i].gameObject.SetActive(true);
+                nounOuts[i].gameObject.GetComponent<Text>().text = message.nouns[i];
+            }
         }
     }
 
     public void updateSendWindow(OutputMessage message)
     {
-        int displayStep = Int32.Parse(message.step);
-        for(int i = 0; i < 4; i++)
+        if(OutputType == "Send")
         {
-            if(i == displayStep)
+            int displayStep = Int32.Parse(message.step);
+            for(int i = 0; i < 4; i++)
             {
-                verbOuts[i].gameObject.SetActive(true);
-                verbOuts[i].gameObject.GetComponent<Text>().text = message.verb;
-                nounOuts[i].gameObject.SetActive(true);
-                nounOuts[i].gameObject.GetComponent<Text>().text = message.noun;
-            }
-            else
-            {
-                verbOuts[i].gameObject.SetActive(false);
-                nounOuts[i].gameObject.SetActive(false);
-            }
+                if(i == displayStep)
+                {
+                    verbOuts[i].gameObject.SetActive(true);
+                    verbOuts[i].gameObject.GetComponent<Text>().text = message.verb;
+                    nounOuts[i].gameObject.SetActive(true);
+                    nounOuts[i].gameObject.GetComponent<Text>().text = message.noun;
+                }
+                else
+                {
+                    verbOuts[i].gameObject.SetActive(false);
+                    nounOuts[i].gameObject.SetActive(false);
+                }
 
+            }
+        }
+    }
+
+    public void updateCorrectGuessWindow(OutputMessage message)
+    {
+        matchesOut.Find("PlayerRoleText").gameObject.GetComponent<Text>().text = message.role;
+        matchesOut.Find("MatchesText").gameObject.GetComponent<Text>().text = message.correctGuesses;
+    }
+
+    public void updateCipherWindow(OutputMessage message)
+    {
+        if(OutputType == "Cipher")
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                if(message.verbs[i] != "")
+                {
+                    verbOuts[i].gameObject.SetActive(true);
+                    verbOuts[i].gameObject.GetComponent<Text>().text = message.verbs[i];
+                }
+                else
+                {
+                    verbOuts[i].gameObject.SetActive(false);                    
+                }
+                if(message.nouns[i] != "")
+                {
+                    nounOuts[i].gameObject.SetActive(true);
+                    nounOuts[i].gameObject.GetComponent<Text>().text = message.nouns[i];
+                }
+                else
+                {
+                    nounOuts[i].gameObject.SetActive(false);                    
+                }
+            }
         }
     }
 }
