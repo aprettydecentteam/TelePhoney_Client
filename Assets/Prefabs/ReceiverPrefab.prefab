@@ -2783,6 +2783,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7713ed14aca888a48a3223e92b538ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  verb_Guess:
+  - {fileID: 6631500186042640785}
+  - {fileID: 8568949410102636816}
+  - {fileID: 8160036440680389303}
+  - {fileID: 541481832666920150}
+  noun_Guess:
+  - {fileID: 2995087052280526785}
+  - {fileID: 7432284257404406697}
+  - {fileID: 8019881303627481123}
+  - {fileID: 3859237719449221432}
 --- !u!1 &3610265609161879031
 GameObject:
   m_ObjectHideFlags: 0

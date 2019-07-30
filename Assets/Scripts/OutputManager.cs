@@ -10,9 +10,9 @@ public class OutputManager : MonoBehaviour
     private bool checkingForMessages = false;
     // Start is called before the first frame update
 
-    private Transform [] verbOuts;
-    private Transform [] nounOuts;
-    private Transform matchesOut;
+    public Transform [] verbOuts;
+    public Transform [] nounOuts;
+    public Transform matchesOut;
 
     void Start()
     {
@@ -20,8 +20,8 @@ public class OutputManager : MonoBehaviour
         {
             //According to documentation, this will always start looking through children
             //before searching in other objects
-            verbOuts[i] = this.gameObject.transform.Find("Verb (" + i + ")");
-            nounOuts[i] = this.gameObject.transform.Find("Noun (" + i + ")");
+            verbOuts[i] = this.gameObject.transform.Find("Verb" + i);
+            nounOuts[i] = this.gameObject.transform.Find("Noun" + i);
 
             //Set these to false so they don't actually populate until the first message is received
             verbOuts[i].gameObject.SetActive(false);
@@ -76,8 +76,11 @@ public class OutputManager : MonoBehaviour
 
     public void updateCorrectGuessWindow(OutputMessage message)
     {
-        matchesOut.Find("PlayerRoleText").gameObject.GetComponent<Text>().text = message.role;
-        matchesOut.Find("MatchesText").gameObject.GetComponent<Text>().text = message.correctGuesses;
+        if(matchesOut != null)
+        {
+            matchesOut.Find("PlayerRoleText").gameObject.GetComponent<Text>().text = message.role;
+            matchesOut.Find("MatchesText").gameObject.GetComponent<Text>().text = message.correctGuesses;
+        }
     }
 
     public void updateCipherWindow(OutputMessage message)

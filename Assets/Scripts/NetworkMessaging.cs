@@ -141,19 +141,14 @@ public class ActionMessage
 }
 public class GuessMessage 
 {
-    public string [] verbs { get; set; }
-    public string [] nouns { get; set; }
+    public string [] verbs { get; set; } = new string [] {"","","",""};
+    public string [] nouns { get; set; } = new string [] {"","","",""};
     public string playerId { get; set; }
     public string sessionId { get; set; }
     public string role { get; set; }
 
     public GuessMessage ()
     {
-        for(int i = 0; i < 4; i++)
-        {
-            verbs[i] = "";
-            nouns[i] = "";
-        }
         playerId = "";
         sessionId = "";
     }

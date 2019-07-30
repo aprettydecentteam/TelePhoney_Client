@@ -12,11 +12,10 @@ public class saboteurManager : MonoBehaviour
     List<GuessMessage> guess_list = new List<GuessMessage>();
     GuessMessage guess_message = new GuessMessage();
 
-    Dropdown step_dropdown;
-    Dropdown noun_dropdown;
-    Dropdown verb_dropdown;
-    Dropdown [] verb_Guess;
-    Dropdown [] noun_Guess;
+    public Dropdown noun_dropdown;
+    public Dropdown verb_dropdown;
+    public Dropdown [] verb_Guess;
+    public Dropdown [] noun_Guess;
 
     private bool checkingForMessages = false;
 
@@ -25,16 +24,7 @@ public class saboteurManager : MonoBehaviour
     void Start()
     {
         playerState.playerRole = "Saboteur";
-        step_dropdown = GameObject.Find("step_dropdown").GetComponent<Dropdown>();
-        verb_dropdown = GameObject.Find("verb_dropdown").GetComponent<Dropdown>();
-        noun_dropdown = GameObject.Find("noun_dropdown").GetComponent<Dropdown>();
-    
-        for(int i = 0; i < 4; i++)
-        {
-            verb_Guess[i] = GameObject.Find("VerbDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
-            noun_Guess[i] = GameObject.Find("NounDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
 
-        }
 
         if (!NetworkMessaging.socketOpen())
         {
@@ -110,6 +100,10 @@ public class saboteurManager : MonoBehaviour
                 Component[] correctGuessComponents;
                 OutputMessage correctGuessUpdate = new OutputMessage();
                 correctGuessUpdate.correctGuesses = message.correctGuesses;
+                correctGuessComponents = GetComponents<OutputManager>();
+
+                foreach (OutputManager manager in correctGuessComponents)
+                    manager.updateCorrectGuessWindow(correctGuessUpdate);
                 break;
             case "gameOver":
                 playerState.gameResult = message.result;
@@ -143,13 +137,31 @@ public class saboteurManager : MonoBehaviour
         }
     }
 
-    public void send_saboteur_message()
+    public void send_saboteur_message_noun()
     {
         next_message.step = persistMessage.step;
         next_message.noun = (noun_dropdown.captionText.text.ToString());
-        if(next_message.noun == "") next_message.noun = persistMessage.noun;
+        next_message.verb = persistMessage.verb;
+        next_message.playerId = playerState.playerId;
+        next_message.sessionId = playerState.sessionId;
+
+        message_list.Add(next_message);
+
+        try
+        {
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
+        }
+        catch (SystemException e)
+        {
+            Debug.Log(e.Message.ToString());
+        }
+    }
+
+    public void send_saboteur_message_verb()
+    {
+        next_message.step = persistMessage.step;
+        next_message.noun = persistMessage.noun;
         next_message.verb = (verb_dropdown.captionText.text.ToString());
-        if(next_message.verb == "") next_message.verb = persistMessage.verb;
         next_message.playerId = playerState.playerId;
         next_message.sessionId = playerState.sessionId;
 
