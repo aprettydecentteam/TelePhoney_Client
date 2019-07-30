@@ -12,6 +12,16 @@ using Newtonsoft.Json;
 
 public class NetworkMessaging : MonoBehaviour
 {
+    private static bool checkingForMessages = false;
+    void update()
+    {
+        if (socketOpen() && !checkingForMessages)
+        {
+            checkingForMessages = true;
+            CheckSocketMessage();
+        }
+    }
+
     private static ClientWebSocket web_socket = new ClientWebSocket();
 
     public static async void ConnectWebSocketToServerAsync( string uri = "ws://localhost:8095/test" )
@@ -24,47 +34,21 @@ public class NetworkMessaging : MonoBehaviour
         return;
     }
 
-    public static async Task<string> CheckSocketMessage()
+    private static async void CheckSocketMessage()
     {
         //Receive from server
         ArraySegment<byte> bytesReceived = new ArraySegment<byte>(new byte[1024]);
         WebSocketReceiveResult result = await web_socket.ReceiveAsync(bytesReceived, CancellationToken.None);
-        string message = Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count);
+        System.Object newMessage = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(bytesReceived.Array, 0, result.Count));
 
-        if (message == null)
-        {
-            message = "";
-        }
-        else
-        {
-            
-        }
-
-        return message;
-    }
-
-    private static void ProcessMessage(string message)
-    {
-        //Interpret server messages
+        playerState.messageQueue.Enqueue(newMessage);
+        checkingForMessages = false;
     }
 
     public static async void SendSocketMessage( System.Object data)
     {
         ArraySegment<byte> bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
         await web_socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
-    public static void ServerTest()
-    {
-        JsonSerializer serializer = new JsonSerializer();
-        ActionMessage action = new ActionMessage();
-        action.verb = ("TEST");
-        action.noun = ("CONNECTION");
-        action.step = ("1");
-
-        SendJsonViaPOST(action);
-
-        return;
     }
 
     public void SendPOSTRequest( string url = "http://localhost:8095" )
