@@ -7,6 +7,7 @@ public class playerState : MonoBehaviour
 {
     public static string playerId { get; set; } = "3";
     public static string sessionId { get; set; } = "4";
+    public static int id { get; set; } = 0;
 
     public static Queue<System.Object> messageQueue = new Queue<System.Object>();
 }

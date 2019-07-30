@@ -18,6 +18,7 @@ public class lobbyManager : MonoBehaviour
 
         try 
         {
+            Debug.Log("Sending new player");
             response = NetworkMessaging.SendJsonViaPOST(playerRequest, "http://localhost:8095/newPlayer").ToString();
         }
         catch (SystemException e) 
@@ -26,6 +27,7 @@ public class lobbyManager : MonoBehaviour
         }
 
         playerState.playerId = response;
+        Debug.Log("Connecting to web socket");
         NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connect");
     }
 
@@ -34,8 +36,10 @@ public class lobbyManager : MonoBehaviour
     {
         if (NetworkMessaging.socketOpen())
         {
+            Debug.Log("Socket is open");
             if (!joinedSession)
             {
+                Debug.Log("Sending join session request");
                 var joinSessionReq = new joinSessionRequest();
                 joinSessionReq.playerId = playerState.playerId;
                 NetworkMessaging.SendSocketMessage(joinSessionReq);
@@ -43,6 +47,7 @@ public class lobbyManager : MonoBehaviour
             }
             else if (!checkingForMessages)
             {
+                Debug.Log("Checking for messages");
                 checkingForMessages = true;
                 checkForMessage();
             }

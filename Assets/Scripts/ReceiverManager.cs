@@ -12,6 +12,8 @@ public class ReceiverManager : MonoBehaviour
     Dropdown [] verb_Guess;
     Dropdown [] noun_Guess;
 
+    private bool checkingForMessages = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,12 +22,60 @@ public class ReceiverManager : MonoBehaviour
             verb_Guess[i] = GameObject.Find("VerbDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
             noun_Guess[i] = GameObject.Find("NounDropdownGuess " + "(" + i + ")").GetComponent<Dropdown>();
         }
+
+        Debug.Log("Connecting to web socket");
+        NetworkMessaging.ConnectWebSocketToServerAsync("ws://localhost:8095/connectdemo");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (NetworkMessaging.socketOpen())
+        {
+            Debug.Log("Socket is open");
+            if (!checkingForMessages)
+            {
+                Debug.Log("Checking for messages");
+                checkingForMessages = true;
+                checkForMessage();
+            }
+        }
+    }
+
+    private void checkForMessage() 
+    {
+        if(playerState.messageQueue.Count > 0)
+        {
+            System.Object newMessage = playerState.messageQueue.Dequeue();
+            resolveMessage((clientEvent)newMessage);
+        }
+
+        checkingForMessages = false;
+    }
+
+    private void resolveMessage(clientEvent message)
+    {
+        switch(message.msgEvent)
+        {
+            case "connected":
+                playerState.id = message.id;
+                roleRequest roleSend = new roleRequest();
+                roleSend.role = "Receiver";
+                roleSend.id = message.id;
+                NetworkMessaging.SendJsonViaPOST(roleSend, "http://localhost:8095/roledemo");
+                break;
+            case "sentMessage":
+                break;
+            case "updateGuess":
+                break;
+            case "correctGuesses":
+                break;
+            case "gameOver":
+                break;
+            default:
+                Debug.Log("No matching event found for scene...");
+                break;
+        }
     }
 
     public void send_message()
@@ -42,7 +92,7 @@ public class ReceiverManager : MonoBehaviour
         
         try
         {
-            NetworkMessaging.SendJsonViaPOST(next_message);
+            NetworkMessaging.SendJsonViaPOST(next_message, "http://localhost:8095/sendmessagedemo");
         }
         catch (SystemException e)
         {
